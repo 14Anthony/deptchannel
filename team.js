@@ -15,6 +15,7 @@ const connection = mysql.createConnection({
 
 connection.connect(function (err) {
     if (err) throw err;
+    runSearch();
 });
 
 function runSearch() {
@@ -24,34 +25,76 @@ function runSearch() {
             type: "rawlist",
             message: "What would you like to do?",
             choices: [
-                "Find songs by artist",
-                "Find all artists who appear more than once",
-                "Find data within a specific range",
-                "Search for a specific song",
-                "Find artists with a top song and top album in the same year"
+                "VIEW All Employees",
+                "VIEW All Employees by Dept",
+                "VIEW All Employees by Manger",
+                "ADD Employee",
+                "REMOVE Employee",
+                "UPDATE Employee by Department",
+                "UPDATE Employee by Manager",
+                "VIEW All Roles",
+                "ADD a Role",
+                "REMOVE a Role"
             ]
         })
     then(function (answer) {
         switch (answer.action) {
-            case "Find songs by artist":
-                artistSearch();
+            case "VIEW All Employees":
+                allEEs();
                 break;
 
-            case "Find all artists who appear more than once":
-                multiSearch();
+            case "VIEW All Employees by Dept":
+                allEEsDept();
                 break;
 
-            case "Find data within a specific range":
-                rangeSearch();
+            case "VIEW All Employees by Manger":
+                allEEsManager();
                 break;
 
-            case "Search for a specific song":
-                songSearch();
+            case "ADD Employee":
+                addEE();
                 break;
 
-            case "Find artists with a top song and top album in the same year":
-                songAndAlbumSearch();
+            case "REMOVE Employee":
+                removeEE();
+                break;
+
+            case "UPDATE Employee by Department":
+                updateEEDept();
+                break;
+
+            case "UPDATE Employee by Manager":
+                updateEEManager();
+                break;
+
+            case "VIEW All Roles":
+                viewAllRoles();
+                break;
+
+            case "ADD a Role":
+                addRole();
+                break;
+
+            case "REMOVE a Role":
+                removeRole();
                 break;
         }
     });
+}
+function allEEs() {
+    inquirer
+        .prompt({
+            name: "artist",
+            type: "input",
+            message: "What artist would you like to search for?"
+        })
+        .then(function (answer) {
+            const query = "SELECT position, song, year FROM top5000 WHERE ?";
+            connection.query(query, { artist: answer.artist }, function (err, res) {
+                for (let i = 0; i < res.length; i++) {
+                    console.log("Position: " + res[i].position + " || Song: " + res[i].song + " || Year: " + res[i].year);
+                }
+                runSearch();
+            });
+        });
 }
