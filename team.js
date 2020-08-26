@@ -156,3 +156,25 @@ function viewDepartment() {
         runSearch();
     })
 }
+// RD = here is where I use inquirer to prompt questions with the responses being INSERTED INTO the roles table.
+function addRole() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                name: "title",
+                message: "Provide EE title"
+            },
+            {
+                type: "number",
+                name: "salary",
+                message: "Provide EEs Salary"
+            },
+            {
+                type: "number",
+                name: "deptID",
+                message: "Provide Department Id number"
+            }
+        ])
+
+}
