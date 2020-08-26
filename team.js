@@ -198,5 +198,31 @@ function viewRoles() {
 
 //RD=  Look back into this past weeks classes for updating.........??????? its the last req.
 function updateEmployee() {
-
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                name: "title",
+                message: "Update EE title"
+            },
+            {
+                type: "number",
+                name: "salary",
+                message: "Update EEs Salary"
+            },
+            {
+                type: "number",
+                name: "deptId",
+                message: "Update Department Id number"
+            }
+        ])
+        //RD =  Here we collect the async response and create another by requesting to insert the responses into the database. copy and past the preview add dept, add ee .
+        .then(function (res) {
+            connection.query("UPDATE roles (title, salary, deptId) SET (?,?,?)", [res.title, res.salary, res.deptId], function (err, data) {
+                if (err) throw err;
+                console.log("Roles have been Added");
+                runSearch();
+            })
+        })
 }
+
