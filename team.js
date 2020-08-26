@@ -3,7 +3,7 @@ const mysql = require("mysql");
 const inquirer = require("inquirer");
 const ctable = require('console.table')
 const banner = require("simple-banner");
-banner.set(" - Corporate Heirarchy - ")
+
 //RD = Here is where we create the connection to the SQL Server
 const connection = mysql.createConnection({
     host: "localhost",
@@ -33,7 +33,7 @@ function runSearch() {
                 "View Employees",
                 "View Departments",
                 "View Roles",
-                "Update Employee Manager",
+                "Update Employee",
                 "Delete Employee",
                 "Delete Department",
                 "Delete Role"
@@ -60,7 +60,7 @@ function runSearch() {
                 case "View Roles":
                     viewRoles()
                     break;
-                case "Update Employee Manager":
+                case "Update Employee":
                     updateEmployee()
                     break;
                 case "Delete Employee":
@@ -126,7 +126,8 @@ function addEmployee() {
 function viewEmployees() {
     connection.query("SELECT * FROM employee", function (err, data) {
         if (err) throw err;
-        console.table(data);
+        // banner.set(" - Employee View - ")
+        console.table(banner.set(" - Employee View - "), data);
         runSearch();
     })
 }
@@ -152,7 +153,7 @@ function addDepartment() {
 function viewDepartment() {
     connection.query("SELECT * FROM department", function (err, data) {
         if (err) throw err;
-        console.table(data);
+        console.table(banner.set(" - DEPARTMENT View - "), data);
         runSearch();
     })
 }
@@ -189,7 +190,7 @@ function addRole() {
 function viewRoles() {
     connection.query("SELECT * FROM roles", function (err, data) {
         if (err) throw err;
-        console.table(data);
+        console.table(banner.set(" - ROLE View - "), data);
         runSearch();
     })
 }
