@@ -4,39 +4,87 @@ CREATE DATABASE CMS_db;
 
 USE CMS_db;
 
-create table department
+CREATE TABLE department
 (
-    dept_Id INT (65)
-    AUTO_INCREMENT,
- dept_Name VARCHAR
-    (30) NOT NULL,
-primary key
-    (id)
-);
-    create table `role`
-    (
-role_Id INT
-    (65) AUTO_INCREMENT NOT NULL,
-title VARCHAR
-    (30) NOT NULL,
-salary DECIMAL
-    (10,4) NOT NULL,
-dept_Id VARCHAR
-    (30) NOT NULL,
-);
-
-    create table employee
-    (
-        id INT (4)
-        AUTO_INCREMENT NOT NULL
-first_Name VARCHAR
+        id INT(65)
+        AUTO_INCREMENT NOT NULL,
+    deptName VARCHAR
         (30) NOT NULL,
-lastName INT
-        (30) NOT NULL,
-manager_id INT 
-role_Id INT
-        (65) NOT NULL,
-primary key
+    PRIMARY KEY
         (id)
 );
--- remember to rerun the database with the new changes
+        CREATE TABLE roles
+        (
+                id INT(65)
+                AUTO_INCREMENT NOT NULL,
+    title VARCHAR
+                (30) NOT NULL,
+    salary DECIMAL
+                (10 , 4 ) NOT NULL,
+    deptId INT
+                (30) NOT NULL,
+    FOREIGN KEY
+                (deptId)
+        REFERENCES department
+                (id),
+    PRIMARY KEY
+                (id)
+);
+
+                CREATE TABLE employee
+                (
+                        id INT(65)
+                        AUTO_INCREMENT NOT NULL,
+    firstName VARCHAR
+                        (30) NOT NULL,
+    lastName VARCHAR
+                        (30) NOT NULL,
+    managerId INT,
+    FOREIGN KEY
+                        (managerId)
+        REFERENCES employee
+                        (id),
+    roleId INT
+                        (65),
+    FOREIGN KEY
+                        (roleId)
+        REFERENCES roles
+                        (id),
+    PRIMARY KEY
+                        (id)
+);
+                        use cms_db;
+
+                        INSERT INTO department
+                                (id, deptName)
+                        VALUES
+                                (1, "sales"),
+                                (2, "engineering"),
+                                (3, "finance"),
+                                (4, "legal");
+                        use cms_db;
+
+                        INSERT INTO employee
+                                (firstName, lastName)
+                        VALUES
+                                ("john", "doe"),
+                                ("mike", "chan"),
+                                ("ashley", "rodriguez"),
+                                ("kevin", "tupik"),
+                                ("malia", "brown"),
+                                ("sarah", "lourd"),
+                                ("tom", "allen"),
+                                ("christian", "eckenrode");
+                        use cms_db;
+
+                        INSERT INTO roles
+                                (title, salary, deptId)
+                        VALUES
+                                ("sales lead", 100000, 1),
+                                ("salesperson", 80000, 1),
+                                ("lead engineer", 150000, 2),
+                                ("software engineer", 120000, 2),
+                                ("accountant", 125000, 3),
+                                ("leagal team lead", 250000, 4),
+                                ("lawyer", 190000, 4),
+                                ("lead engineer", 150000, 2);

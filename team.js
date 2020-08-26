@@ -22,6 +22,7 @@ connection.connect(function (err) {
 function runSearch() {
     //RD = Here is where we que the pathway of questions
     inquirer
+
         .prompt([{
             message: "What would you like to do?",
             type: "list",
