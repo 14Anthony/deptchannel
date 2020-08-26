@@ -1,7 +1,7 @@
 //RD =  here is qhere I require the npm pacakages, and third-party programs for npm and console applications
 const mysql = require("mysql");
 const inquirer = require("inquirer");
-const console = require('console.table')
+const ctable = require('console.table')
 const banner = require("simple-banner");
 banner.set(" - Corporate Heirarchy - ")
 //RD = Here is where we create the connection to the SQL Server
@@ -94,13 +94,14 @@ function addEmployee() {
                 name: "roleId",
                 message: "Provide the EE's Role",
                 choices: [
-                    "10 sales lead",
-                    "11 salesperson",
-                    "20 lead engineer",
-                    "21 software engineer",
-                    "31 accountant",
-                    "40 leagal team lead",
-                    "41 lawyer"
+                    "1	sales lead",
+                    "2	salesperson",
+                    "3	lead engineer",
+                    "4	software engineer",
+                    "5	accountant",
+                    "6	leagal team lead",
+                    "7	lawyer",
+                    "8	lead engineer",
                 ]
             },
             {
@@ -112,10 +113,9 @@ function addEmployee() {
         ])
         //RD = Here is we where we received the async code.
         .then(function (res) {
-            //RD =  Here is where I break apart the choices array and ids for the roles into seperate strings at the space.
-            let roleID = res.roleID.split(" ");
+            var roleID = res.roleId.split(" ");
             //RD = per JJ, the question marks are directly related to the the values, and sequence matters?           
-            connection.query("INSERT INTO employee (firstName, lastName, roleId, managerId) Values (?,?,?,?)", [res.firstName, res.lastName, res.roleid[0], res.managerid], function (err, data) {
+            connection.query("INSERT INTO employee (firstName, lastName, roleId, managerId) Values (?,?,?,?)", [res.firstName, res.lastName, res.roleId[0], res.managerid], function (err, data) {
                 if (err) throw err;
                 console.log("An EE has been added.");
                 runSearch();
@@ -126,7 +126,7 @@ function addEmployee() {
 function viewEmployees() {
     connection.query("SELECT * FROM employee", function (err, data) {
         if (err) throw err;
-        console.log(data);
+        console.table(data);
         runSearch();
     })
 }
@@ -136,12 +136,12 @@ function addDepartment() {
         .prompt([
             {
                 type: "input",
-                name: "dept",
+                name: "deptName",
                 message: "Provide your Departments Name."
             },
         ])
         .then(function (res) {
-            connection.query("INSERT INTO department (name) VALUES ?", [res.department], function (err, data) {
+            connection.query("INSERT INTO department (deptName) VALUES (?)", [res.deptName], function (err, data) {
                 if (err) throw err;
                 console.log("Department Added");
                 runSearch();
@@ -152,7 +152,7 @@ function addDepartment() {
 function viewDepartment() {
     connection.query("SELECT * FROM department", function (err, data) {
         if (err) throw err;
-        console.log(data);
+        console.table(data);
         runSearch();
     })
 }
@@ -172,13 +172,13 @@ function addRole() {
             },
             {
                 type: "number",
-                name: "deptID",
+                name: "deptId",
                 message: "Provide Department Id number"
             }
         ])
         //RD =  Here we collect the async response and create another by requesting to insert the responses into the database. copy and past the preview add dept, add ee .
         .then(function (res) {
-            connection.query("INSERT INTO roles (title, salary, dept_id) VALUES (?,?,?)", [res.title, res.salary, res.dept_id], function (err, data) {
+            connection.query("INSERT INTO roles (title, salary, deptId) VALUES (?,?,?)", [res.title, res.salary, res.deptId], function (err, data) {
                 if (err) throw err;
                 console.log("Roles have been Added");
                 runSearch();
