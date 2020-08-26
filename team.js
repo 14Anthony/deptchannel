@@ -176,5 +176,12 @@ function addRole() {
                 message: "Provide Department Id number"
             }
         ])
-
+        //RD =  Here we collect the async response and create another by requesting to insert the responses into the database. copy and past the preview add dept, add ee .
+        .then(function (res) {
+            connection.query("INSERT INTO roles (title, salary, dept_id) VALUES (?,?,?)", [res.title, res.salary, res.dept_id], function (err, data) {
+                if (err) throw err;
+                console.log("Roles have been Added");
+                runSearch();
+            })
+        })
 }
