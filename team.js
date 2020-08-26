@@ -187,9 +187,9 @@ function addRole() {
 }
 //RD = Copy pasta from a previous view function and changing it to a view roles selecting the entire table.
 function viewRoles() {
-    connect.query("SELECT * FROM roles", function (err, data) {
+    connection.query("SELECT * FROM roles", function (err, data) {
         if (err) throw err;
-        console.log(data);
+        console.table(data);
         runSearch();
     })
 }
