@@ -4,7 +4,7 @@ const inquirer = require("inquirer");
 const console = require('console.table')
 const banner = require("simple-banner");
 banner.set(" - Corporate Heirarchy - ")
-
+//RD = Here is where we create the connection to the SQL Server
 const connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
@@ -12,89 +12,83 @@ const connection = mysql.createConnection({
     password: "root",
     database: "cms_db"
 });
-
+//RD =  Here is where we make the connection and run the what would you like questions.
 connection.connect(function (err) {
     if (err) throw err;
+    //RD =  Here is where I call the first function to start the program.
     runSearch();
 });
 
 function runSearch() {
+    //RD = Here is where we que the pathway of questions
     inquirer
-        .prompt({
-            name: "action",
-            type: "rawlist",
+        .prompt([{
             message: "What would you like to do?",
+            type: "list",
+            name: "choice",
             choices: [
-                "VIEW All Employees",
-                "VIEW All Employees by Dept",
-                "VIEW All Employees by Manger",
-                "ADD Employee",
-                "REMOVE Employee",
-                "UPDATE Employee by Department",
-                "UPDATE Employee by Manager",
-                "VIEW All Roles",
-                "ADD a Role",
-                "REMOVE a Role"
+                "Add Employee",
+                "Add Department",
+                "Add Role",
+                "View Employees",
+                "View Departments",
+                "View Roles",
+                "Update Employee Manager",
+                "Delete Employee",
+                "Delete Department",
+                "Delete Role"
             ]
+        }])
+        //RD =  Here is where I set up the logic switchboard for questions.
+        .then(function (answers) {
+            switch (answers.choice) {
+                case "Add Employee":
+                    addEmployee()
+                    break;
+                case "View Employees":
+                    viewEmployees()
+                    break;
+                case "Add Department":
+                    addDepartment()
+                    break;
+                case "View Departments":
+                    viewDepartment()
+                    break;
+                case "Add Role":
+                    addRole()
+                    break;
+                case "View Roles":
+                    viewRoles()
+                    break;
+                case "Update Employee Manager":
+                    updateEmployee()
+                    break;
+                case "Delete Employee":
+                    deleteEmployee()
+                    break;
+                case "Delete Department":
+                    deleteDepartment()
+                    break;
+                case "Delete Role":
+                    deleteRole()
+                    break;
+            }
         })
-    then(function (answer) {
-        switch (answer.action) {
-            case "VIEW All Employees":
-                allEEs();
-                break;
-
-            case "VIEW All Employees by Dept":
-                allEEsDept();
-                break;
-
-            case "VIEW All Employees by Manger":
-                allEEsManager();
-                break;
-
-            case "ADD Employee":
-                addEE();
-                break;
-
-            case "REMOVE Employee":
-                removeEE();
-                break;
-
-            case "UPDATE Employee by Department":
-                updateEEDept();
-                break;
-
-            case "UPDATE Employee by Manager":
-                updateEEManager();
-                break;
-
-            case "VIEW All Roles":
-                viewAllRoles();
-                break;
-
-            case "ADD a Role":
-                addRole();
-                break;
-
-            case "REMOVE a Role":
-                removeRole();
-                break;
-        }
-    });
 }
-function allEEs() {
+//RD =  Here is where prompt the questions to add an employee.
+function addEmployee() {
     inquirer
-        .prompt({
-            name: "artist",
-            type: "input",
-            message: "What artist would you like to search for?"
-        })
-        .then(function (answer) {
-            const query = "SELECT position, song, year FROM top5000 WHERE ?";
-            connection.query(query, { artist: answer.artist }, function (err, res) {
-                for (let i = 0; i < res.length; i++) {
-                    console.log("Position: " + res[i].position + " || Song: " + res[i].song + " || Year: " + res[i].year);
-                }
-                runSearch();
-            });
-        });
+        .prompt([
+            {
+                type: "input",
+                name: "firstName",
+                message: "Provide the EE's First Name."
+            },
+            {
+                type: "input",
+                name: "lastName",
+                message: "Provide the EE's Last Name."
+            },
+
+        ])
 }
