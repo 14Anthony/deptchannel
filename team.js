@@ -195,4 +195,6 @@ function viewRoles() {
 }
 
 //RD=  Look back into this past weeks classes for updating.........??????? its the last req.
-function 
+function updateEmployee() {
+
+}

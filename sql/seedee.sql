@@ -11,3 +11,5 @@ VALUES
     ("sarah", "lourd", null, 40),
     ("tom", "allen", 6, 41),
     ("christian", "eckenrode", 12, 20);
+
+-- remember to rerun the database with the new changes

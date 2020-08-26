@@ -39,3 +39,4 @@ role_Id INT
 primary key
         (id)
 );
+-- remember to rerun the database with the new changes

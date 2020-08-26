@@ -11,3 +11,4 @@ VALUES
     (40, "leagal team lead", 250000, 4),
     (41, "lawyer", 190000, 4),
     (20, "lead engineer", 150000, 2);
+    -- remember to rerun the database with the new changes
