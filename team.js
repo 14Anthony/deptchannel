@@ -130,6 +130,7 @@ function viewEmployees() {
         runSearch();
     })
 }
+//RD =  here is where I create the DEpts.  and insert the values into SQL.
 function addDepartment() {
     inquirer
         .prompt([
@@ -146,4 +147,12 @@ function addDepartment() {
                 runSearch();
             })
         })
+}
+//RD =  here is where I create the function to view the newly created Depts copy and past from view employees..
+function viewDepartment() {
+    connection.query("SELECT * FROM department", function (err, data) {
+        if (err) throw err;
+        console.log(data);
+        runSearch();
+    })
 }
