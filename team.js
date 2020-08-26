@@ -89,6 +89,61 @@ function addEmployee() {
                 name: "lastName",
                 message: "Provide the EE's Last Name."
             },
+            {
+                type: "list",
+                name: "roleId",
+                message: "Provide the EE's Role",
+                choices: [
+                    "10 sales lead",
+                    "11 salesperson",
+                    "20 lead engineer",
+                    "21 software engineer",
+                    "31 accountant",
+                    "40 leagal team lead",
+                    "41 lawyer"
+                ]
+            },
+            {
+                type: "number",
+                name: "managerId",
+                message: "Provide the EE's Managers Id."
+            },
 
         ])
+        //RD = Here is we where we received the async code.
+        .then(function (res) {
+            //RD =  Here is where I break apart the choices array and ids for the roles into seperate strings at the space.
+            let roleID = res.roleID.split(" ");
+            //RD = per JJ, the question marks are directly related to the the values, and sequence matters?           
+            connection.query("INSERT INTO employee (firstName, lastName, roleId, managerId) Values (?,?,?,?)", [res.firstName, res.lastName, res.roleid[0], res.managerid], function (err, data) {
+                if (err) throw err;
+                console.log("An EE has been added.");
+                runSearch();
+            })
+        })
+}
+//RD = second on the switchboard is view employee function requesting all the data from the employee table, and cue'ing the original questions again.
+function viewEmployees() {
+    connection.query("SELECT * FROM employee", function (err, data) {
+        if (err) throw err;
+        console.log(data);
+        runSearch();
+    })
+}
+function addDepartment() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                name: "dept",
+                message: "Provide your Departments Name."
+            },
+        ])
+        .then(function (res) {
+            connection.query("INSERT INTO department (name) VALUES ?", [res.department], function (err, data) {
+                if (err) throw err;
+                console.log("Department Added");
+                runSearch();
+            })
+        })
 }
