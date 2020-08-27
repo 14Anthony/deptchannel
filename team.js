@@ -201,42 +201,47 @@ function updateEmployee() {
 
     //We still have to get all the information to join and create a new table
     connection.query("SELECT * FROM employee", function (errE, dataE) {
-        connection.query("SELECT * FROM role", function (errR, datR) {
+        connection.query("SELECT * FROM roles", function (errR, dataR) {
 
             inquirer
                 .prompt([
                     {
-                        type: "action",
-                        name: "title",
+                        type: "list",
+                        name: "updateE",
                         message: "Update which EE?",
                         choices: dataE.map(employee => {
-                            return {
-                                name: `${employee.first_name} ${employee.last_name}`,
+                            return {//create a template literal to bring the queries together for ees
+                                name: `${employee.firstName} ${employee.lastName}`,
                                 value: employee.id
                             }
                         })
                     },
                     {
-                        type: "number",
-                        name: "salary",
-                        message: "Update EEs Salary"
-                    },
-                    {
-                        type: "number",
-                        name: "deptId",
-                        message: "Update Department Id number"
+                        type: "list",
+                        name: "updateR",
+                        message: "Provide the updated role",
+                        choices: dataR.map(roles => {
+                            return { //create a template literal to bring the queries together for roles
+                                name: `${roles.title}${roles.id}`,
+                                value: roles.id
+
+                            }
+                        })
                     }
                 ])
+                //RD =  Here we collect the async response and create another by requesting to insert the responses into the database. copy and past the preview add dept, add ee .
+                .then(function (res) {
+                    connection.query("UPDATE employee SET roleId = ? WHERE id =?", [res.updateE, res.updateR], function (err, data) {
+
+                        if (err) throw err;
+                        console.log("Roles have been Added");
+                        runSearch();
+                    }
+                               
+                    })
         })
     })
+})
 
-        //RD =  Here we collect the async response and create another by requesting to insert the responses into the database. copy and past the preview add dept, add ee .
-        .then(function (res) {
-            connection.query("UPDATE roles (title, salary, deptId) SET (?,?,?)", [res.title, res.salary, res.deptId], function (err, data) {
-                if (err) throw err;
-                console.log("Roles have been Added");
-                runSearch();
-            })
-        })
 }
 
