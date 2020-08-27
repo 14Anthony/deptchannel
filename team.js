@@ -196,26 +196,40 @@ function viewRoles() {
     })
 }
 
-//RD=  Look back into this past weeks classes for updating.........??????? its the last req.
+//RD=  Look back into this past weeks classes for updating.........??????? its the last req
 function updateEmployee() {
-    inquirer
-        .prompt([
-            {
-                type: "input",
-                name: "title",
-                message: "Update EE title"
-            },
-            {
-                type: "number",
-                name: "salary",
-                message: "Update EEs Salary"
-            },
-            {
-                type: "number",
-                name: "deptId",
-                message: "Update Department Id number"
-            }
-        ])
+
+    //We still have to get all the information to join and create a new table
+    connection.query("SELECT * FROM employee", function (errE, dataE) {
+        connection.query("SELECT * FROM role", function (errR, datR) {
+
+            inquirer
+                .prompt([
+                    {
+                        type: "action",
+                        name: "title",
+                        message: "Update which EE?",
+                        choices: dataE.map(employee => {
+                            return {
+                                name: `${employee.first_name} ${employee.last_name}`,
+                                value: employee.id
+                            }
+                        })
+                    },
+                    {
+                        type: "number",
+                        name: "salary",
+                        message: "Update EEs Salary"
+                    },
+                    {
+                        type: "number",
+                        name: "deptId",
+                        message: "Update Department Id number"
+                    }
+                ])
+        })
+    })
+
         //RD =  Here we collect the async response and create another by requesting to insert the responses into the database. copy and past the preview add dept, add ee .
         .then(function (res) {
             connection.query("UPDATE roles (title, salary, deptId) SET (?,?,?)", [res.title, res.salary, res.deptId], function (err, data) {
