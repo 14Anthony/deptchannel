@@ -236,12 +236,11 @@ function updateEmployee() {
                         if (err) throw err;
                         console.log("Roles have been Added");
                         runSearch();
-                    }
-                               
+
                     })
+                })
         })
     })
-})
 
 }
 
